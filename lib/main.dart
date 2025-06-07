@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:medialert/providers/HomeProvider.dart';
+import 'package:medialert/views/BaseScreen.dart';
+import 'package:provider/provider.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+
+        /**
+         * Ejemplo para incluir los providers
+         */
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        // Agrega más providers aquí
+      ],
+      child: MyApp(),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -18,7 +34,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -81,6 +96,10 @@ class HomeScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     // Acción del botón
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BaseScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xAA07AA97),

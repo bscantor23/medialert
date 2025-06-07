@@ -1,4 +1,4 @@
-import 'package:medialert/db/db_helper.dart';
+import 'package:medialert/database/db_helper.dart';
 import 'package:medialert/models/medication.dart';
 
 class MedicationDao {
@@ -13,19 +13,19 @@ class MedicationDao {
     return maps.map((map) => Medication.fromMap(map)).toList();
   }
 
+  /**
+   * final MedicationDao dao = MedicationDao();
 
-final MedicationDao dao = MedicationDao();
+      final newMedication = Medication(
+      name: 'Acetaminofen',
+      dosage: '500mg',
+      instructions: 'Tomar cada 8 horas después de comer',
+      userId: 1,
+      );
 
-final newMedication = Medication(
-  name: 'Acetaminofen',
-  dosage: '500mg',
-  instructions: 'Tomar cada 8 horas después de comer',
-  userId: 1,
-);
-
-await dao.insertMedication(newMedication);
-
-
+      await dao.insertMedication(newMedication);
+   *
+   */
 }
 
 

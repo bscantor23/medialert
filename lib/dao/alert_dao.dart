@@ -1,4 +1,4 @@
-import 'package:medialert/db/db_helper.dart';
+import 'package:medialert/database/db_helper.dart';
 import 'package:medialert/models/alert.dart';
 
 class AlertDao {
