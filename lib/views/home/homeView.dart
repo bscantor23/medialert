@@ -229,43 +229,258 @@ class _HomeViewState extends State<HomeView> {
               height: constraints.maxHeight,
 
               child: Center(
-                child: Container(
-                  height: constraints.minHeight * 0.6,
+                child: GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor:  Colors.white,
+                      isScrollControlled: true, // Opcional, si quieres usar más altura
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (context) => buildBottonSheet(
+                        context: context,
+                        nombre: nombre,
+                        estado: estado,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: constraints.minHeight * 0.5,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(133, 200, 193, 1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipOval(
+                            child: Container(
+                              width: constraints.maxHeight * 0.4,
+                              height: constraints.maxHeight * 0.4,
+                              color: Color.fromRGBO(7, 170, 151, 1),
+                              child: Center(
+                                child: Icon(
+                                  Icons.check_rounded,
+                                  color: Colors.white,
+                                  size: constraints.maxHeight * 0.4,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Text(
+                            estado,
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildBottonSheet({
+    required BuildContext context,
+    required String nombre,
+    required String estado,
+  }) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2.7,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+       color: Colors.transparent,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      child:LayoutBuilder(
+        builder: (context, constraints) =>  Column(
+          children: [
+            SizedBox(height: 3),
+            Container(
+
+              height: 5,
+              width: 50,
+              decoration: BoxDecoration(color:Color.fromRGBO(133, 200, 193, 1),
+              borderRadius: BorderRadius.circular(5)),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Seleccionar estado para ${nombre}',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(height: 4),
+
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Container(
+                  height: constraints.minHeight * 0.2,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(133, 200, 193, 1),
+                    color: Color.fromRGBO(7, 170, 151, 1),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 5, right: 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                       children: [
                         ClipOval(
                           child: Container(
-                            width: constraints.maxHeight * 0.5,
-                            height: constraints.maxHeight * 0.5,
-                            color: Color.fromRGBO(7, 170, 151, 1),
+                            width: constraints.maxHeight * 0.17,
+                            height: constraints.maxHeight * 0.17,
+                            color: Color.fromRGBO(133, 200, 193, 1),
                             child: Center(
                               child: Icon(
                                 Icons.check_rounded,
                                 color: Colors.white,
-                                size: constraints.maxHeight * 0.4,
+                                size: constraints.maxHeight * 0.14,
                               ),
                             ),
                           ),
                         ),
 
+                        SizedBox(
+                          width: 20,
+                        ),
+
                         Text(
-                          estado,
+                          'Tomado',
                           style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ],
                     ),
                   ),
                 ),
+           ),
+
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: constraints.minHeight * 0.2,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(254,105,96,1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  child: Row(
+
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: constraints.maxHeight * 0.17,
+                          height: constraints.maxHeight * 0.17,
+                          color: Color.fromRGBO(255,195,86 ,1),
+                          child: Center(
+                            child: Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                              size: constraints.maxHeight * 0.14,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: 20,
+                      ),
+
+                      Text(
+                        'Cancelar',
+                        style: TextStyle(fontSize: 15, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: constraints.minHeight * 0.2,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(255,195,86,1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  child: Row(
+
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: constraints.maxHeight * 0.17,
+                          height: constraints.maxHeight * 0.17,
+                          color: Color.fromRGBO(97,97,97,1),
+                          child: Center(
+                            child: Icon(
+                              Icons.access_time,
+                              color: Colors.white,
+                              size: constraints.maxHeight * 0.14,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: 20,
+                      ),
+
+                      Text(
+                        'Espera',
+                        style: TextStyle(fontSize: 15, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+
+
+            /*
+
+
+            ListTile(
+              leading: Icon(Icons.cancel, color: Colors.red),
+              title: Text('Cancelado'),
+              onTap: () {
+                // acción
+                Navigator.pop(context, 'cancelado');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.check_circle, color: Colors.green),
+              title: Text('Tomado'),
+              onTap: () {
+                Navigator.pop(context, 'tomado');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.access_time, color: Colors.orange),
+              title: Text('Espera'),
+              onTap: () {
+                Navigator.pop(context, 'espera');
+              },
+            ),*/
+
           ],
         ),
       ),
