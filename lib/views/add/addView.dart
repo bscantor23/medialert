@@ -14,7 +14,7 @@ class _AddViewState extends State<AddView> {
     return Container(
       width: widthView,
       height: heightView,
-      color: Colors.red,
+      color: Color.fromRGBO(232, 242, 241, 1),
     );
   }
 }

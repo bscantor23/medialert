@@ -37,6 +37,8 @@ class _BaseScreenState extends State<BaseScreen> {
     double widthView = MediaQuery.of(context).size.width;
 
     return Scaffold(
+
+      resizeToAvoidBottomInset: false,
       extendBody: true,
       body: Stack(children: [getView(), buildBottomNavigationBar(widthView)]),
     );

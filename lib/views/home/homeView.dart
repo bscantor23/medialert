@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -8,15 +11,384 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String _fecha = "Cargando...";
+
+  @override
+  void initState() {
+    super.initState();
+    _inicializarFecha();
+  }
+
+  Future<void> _inicializarFecha() async {
+    await initializeDateFormatting('es', null);
+    DateTime ahora = DateTime.now();
+
+    String fecha = DateFormat(" d 'de' MMMM 'de' y", 'es').format(ahora);
+    setState(() {
+      _fecha = fecha;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double heightView = MediaQuery.of(context).size.height;
     double widthView = MediaQuery.of(context).size.width;
-    return Container(
-      width: widthView,
-      height: heightView,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Container(
+        width: widthView,
+        height: heightView,
+        color: Color.fromRGBO(232, 242, 241, 1),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildHeader(widthView, heightView),
+              Padding(
+                padding: EdgeInsets.only(right: 20, left: 20),
+                child: Text(
+                  'Medicamentos próximos',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 0),
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 3,
+                  itemBuilder: (context, index) => buildContainer(
+                    heightView: heightView,
+                    hora: '10:00 AM',
+                    cantidad: '800 mg',
+                    frecuencia: 'Diario',
+                    nombre: 'Ibuprofeno',
+                    estado: 'Tomado',
+                  ),
+                ),
+              ),
 
-      color: Color.fromRGBO(232, 242, 241, 1),
+              Padding(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 0),
+
+                child: buildCardProximaToma(),
+              ),
+
+              SizedBox(height: heightView * 0.15),
+            ],
+          ),
+        ),
+      ),
     );
   }
+
+  Container buildCardProximaToma() {
+    return Container(
+      width: double.infinity,
+      height: 120,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(7, 170, 151, 1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Column(
+          children: [
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  width: constraints.maxWidth * 0.25,
+                  height: constraints.maxHeight - 20,
+                  child: Center(
+                    child: SvgPicture.asset('assets/icons/add-black.svg'),
+                  ),
+                ),
+                Container(
+                  width: constraints.maxWidth * 0.70,
+                  height: constraints.maxHeight - 20,
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Próxima toma',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'Ibuprofeno en 2 horas',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      LinearProgressIndicator(
+                        value: 0.6, // 60% de progreso
+                        color: Colors.tealAccent,
+                        borderRadius: BorderRadius.circular(10),
+                        backgroundColor: Colors.teal.shade100,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        '60 % completado - 2/3 tomas realizadas',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildContainer({
+    required double heightView,
+    required String nombre,
+    required String frecuencia,
+    required String cantidad,
+    required String hora,
+    required String estado,
+  }) {
+    return Container(
+      width: double.infinity,
+      height: heightView * 0.1,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            spreadRadius: 0,
+            blurRadius: 4,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      margin: EdgeInsets.only(bottom: 18),
+
+      child: LayoutBuilder(
+        builder: (context, constraints) => Row(
+          children: [
+            SizedBox(
+              width: constraints.maxWidth * 0.6,
+              height: constraints.maxHeight,
+
+              child: Padding(
+                padding: EdgeInsets.only(top: 5, left: 10, bottom: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      nombre,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      cantidad,
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          hora,
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                        SizedBox(width: 10),
+
+                        Text(
+                          frecuencia,
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+
+            Container(
+              width: constraints.maxWidth * 0.35,
+              height: constraints.maxHeight,
+
+              child: Center(
+                child: Container(
+                  height: constraints.minHeight * 0.6,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(133, 200, 193, 1),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ClipOval(
+                          child: Container(
+                            width: constraints.maxHeight * 0.5,
+                            height: constraints.maxHeight * 0.5,
+                            color: Color.fromRGBO(7, 170, 151, 1),
+                            child: Center(
+                              child: Icon(
+                                Icons.check_rounded,
+                                color: Colors.white,
+                                size: constraints.maxHeight * 0.4,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Text(
+                          estado,
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ClipPath buildHeader(double widthView, double heightView) {
+    return ClipPath(
+      clipper: ClipperPersonalizado(),
+      child: Container(
+        width: widthView,
+        height: heightView * 0.3,
+        color: Color.fromRGBO(7, 170, 151, 1),
+        child: Padding(
+          padding: EdgeInsets.only(right: 20, left: 20, bottom: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SafeArea(
+                    child: SizedBox(
+                      width: (widthView / 1.5),
+                      child: Text(
+                        '!Bienvenido a  MediAlert¡',
+                        style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          height: 1.05,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ClipOval(
+                    child: Container(
+                      color: Colors.white,
+                      width: widthView * 0.13,
+                      height: widthView * 0.13,
+                      child: Center(
+                        child: Icon(
+                          Icons.notifications_none,
+                          color: Colors.black,
+                          size: widthView * 0.09,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                _fecha,
+                style: TextStyle(
+                  height: 0.5,
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+              Spacer(),
+
+              buildInputText(),
+              Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildInputText() {
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        hintText: 'Buscar medicamento',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        labelStyle: TextStyle(color: Colors.black, fontSize: 15),
+        hintStyle: TextStyle(color: Colors.black, fontSize: 15),
+        prefixIcon: Icon(Icons.search, color: Colors.black),
+      ),
+      style: const TextStyle(
+        color: Color.fromRGBO(7, 170, 151, 1),
+        fontSize: 15,
+      ),
+    );
+  }
+}
+
+class ClipperPersonalizado extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+
+    // Comenzamos en la esquina superior izquierda
+    path.moveTo(0, 0);
+
+    // Vamos al borde inferior izquierdo
+    path.lineTo(0, size.height * 0.8);
+
+    // Curva prominente en el centro (punto de control en el centro pero más abajo)
+    path.quadraticBezierTo(
+      size.width * 0.5, // Centro horizontal
+      size.height * 1.20, // Punto de control - 20% más abajo del fondo
+      size.width, // Termina en esquina inferior derecha
+      size.height * 0.8, // Misma altura que el lado izquierdo
+    );
+
+    path.lineTo(size.width, 0); // Esquina superior derecha
+    path.close(); // Cerramos el camino
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

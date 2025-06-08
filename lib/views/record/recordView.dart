@@ -15,7 +15,7 @@ class _RecordViewState extends State<RecordView> {
     return Container(
       width: widthView,
       height: heightView,
-      color: Colors.red,
+      color: Color.fromRGBO(232, 242, 241, 1),
     );
   }
 }

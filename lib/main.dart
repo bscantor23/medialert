@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 fontSize: 50,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Afacad',
-                color: Colors.white,
+                color: Colors.black,
                 decoration: TextDecoration.none,
               ),
               textAlign: TextAlign.center,
@@ -71,6 +71,7 @@ class HomeScreen extends StatelessWidget {
                 height: 400,
               ),
             ),
+            Spacer(),
             // Texto pequeño en la parte inferior
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -87,6 +88,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+
             // Botón mediano en la parte inferior
             Padding(
               padding: const EdgeInsets.only(bottom: 40.0),
@@ -95,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                 height: 48,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Acción del botón
+                    //Vista Home
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BaseScreen()),
@@ -104,7 +106,6 @@ class HomeScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xAA07AA97),
                     shape: RoundedRectangleBorder(
-                      
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
