@@ -130,7 +130,7 @@ class _HomeViewState extends State<HomeView> {
         width: widthView,
         height: heightView * 0.3,
         padding: EdgeInsets.only(top: 20),
-        constraints: BoxConstraints(minHeight: 320),
+        constraints: BoxConstraints(minHeight: 360),
         color: Color.fromRGBO(7, 170, 151, 1),
         child: Padding(
           padding: EdgeInsets.only(right: 20, left: 20, bottom: 20),

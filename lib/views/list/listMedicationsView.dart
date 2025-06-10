@@ -44,7 +44,7 @@ class _ListMedicationsView extends State<ListMedicationsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              buildHeader(widthView, heightView, Constants.pageTitle, 200),
+              buildHeader(widthView, heightView, Constants.pageTitle, 220),
               Padding(
                 padding: EdgeInsets.only(right: 20, left: 20, top: 0),
                 child: Consumer<MedicationsProvider>(

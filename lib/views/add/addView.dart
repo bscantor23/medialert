@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:medialert/widgets/waveClipper.dart';
+
+import '../../widgets/header.dart';
+
 
 class AddView extends StatefulWidget {
   const AddView({super.key});
@@ -35,59 +39,6 @@ class _AddViewState extends State<AddView> {
     }
   }
 
-  ClipPath buildHeader(double widthView, double heightView) {
-    return ClipPath(
-      clipper: ClipperPersonalizado(),
-      child: Container(
-        width: widthView,
-        height: heightView * 0.18, // 0.18 altura del header
-        color: Color.fromRGBO(7, 170, 151, 1),
-        child: Padding(
-          padding: EdgeInsets.only(right: 20, left: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SafeArea(
-                    child: SizedBox(
-                      width: (widthView / 1.5),
-                      child: Text(
-                        'Agregar medicamento',
-                        style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          height: 1.05,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ClipOval( // icono campana
-                    child: Container(
-                      color: Colors.white,
-                      width: widthView * 0.13,
-                      height: widthView * 0.13,
-                      child: Center(
-                        child: Icon(
-                          Icons.notifications_none,
-                          color: Colors.black,
-                          size: widthView * 0.09,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double heightView = MediaQuery.of(context).size.height;
@@ -105,9 +56,9 @@ class _AddViewState extends State<AddView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              buildHeader(widthView, heightView),
+              buildHeader(widthView, heightView, 'Agregar medicamente', 220),
               Padding( // nombre del medicamento + input text
-                padding: EdgeInsets.only(right: 20, left: 20, top: 0),
+                padding: EdgeInsets.only(right: 20, left: 20, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
