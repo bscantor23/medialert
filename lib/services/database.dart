@@ -62,8 +62,16 @@ class DatabaseService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             medication_id INTEGER NOT NULL,
             medication_status_id INTEGER NOT NULL,
+            mass_unit_id INTEGER NOT NULL,
+            quantity REAL NOT NULL,
+            name TEXT NOT NULL,
+            instructions TEXT NOT NULL,
+            dosage TEXT NOT NULL,
+            time TEXT NOT NULL,
+            intake_day TEXT NOT NULL,
             FOREIGN KEY(medication_id) REFERENCES medications(id)
             FOREIGN KEY(medication_status_id) REFERENCES medication_statuses(id)
+            FOREIGN KEY(mass_unit_id) REFERENCES mass_units(id)
           )
         ''');
       },
@@ -121,11 +129,18 @@ class DatabaseService {
 
       await txn.rawInsert(
         'INSERT INTO $_medicationsTableName (mass_unit_id, quantity, name, instructions, dosage, time) VALUES (?, ?, ?, ?, ?, ?)',
-        [1, 500.0, 'Paracetamol', 'Tomar cada 8 horas', '[0, 1, 2]', '08:00'],
+        [
+          1,
+          500.0,
+          'Paracetamol',
+          'Tomar cada 8 horas',
+          '[1, 2, 3]',
+          '08:00 AM',
+        ],
       );
       await txn.rawInsert(
         'INSERT INTO $_medicationsTableName (mass_unit_id, quantity, name, instructions, dosage, time) VALUES (?, ?, ?, ?, ?, ?)',
-        [2, 250.0, 'Ibuprofeno', 'Tomar cada 6 horas', '[3, 4]', '12:00'],
+        [2, 250.0, 'Ibuprofeno', 'Tomar cada 6 horas', '[3, 4]', '12:00 PM'],
       );
 
       await txn.rawInsert(
@@ -135,8 +150,8 @@ class DatabaseService {
           1000.0,
           'Amoxicilina',
           'Tomar cada 24 horas',
-          '[0,1,2,3,4,5,6]',
-          '09:00',
+          '[1,2,3,4,5,6,7]',
+          '09:00 PM',
         ],
       );
       await txn.rawInsert(
@@ -146,8 +161,8 @@ class DatabaseService {
           750.0,
           'Metformina',
           'Tomar cada 12 horas',
-          '[0,1,2,3,4,5]',
-          '20:00',
+          '[1,2,3,4,5,6]',
+          '10:00 PM',
         ],
       );
     });

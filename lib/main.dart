@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medialert/providers/ListMedications.dart';
+import 'package:medialert/providers/HomeProvider.dart';
+import 'package:medialert/providers/IntakeLogProvider.dart';
+import 'package:medialert/providers/MedicationsProvider.dart';
 import 'package:medialert/views/BaseScreen.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +9,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ListMedicationsProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => IntakeLogProvider()),
+        ChangeNotifierProvider(create: (_) => MedicationsProvider()),
       ],
       child: MyApp(),
     ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:medialert/models/medication.dart';
 import 'package:provider/provider.dart';
-import 'package:medialert/providers/ListMedications.dart';
+import 'package:medialert/providers/MedicationsProvider.dart';
 import 'package:medialert/widgets/header.dart';
 
 class Constants {
   static const String pageTitle = 'Lista de Medicamentos';
   static const String modalTitle = '¿Alguna modificación pendiente?';
+  static const String noResults = 'No hay medicamentos registrados';
   static const String editAction = 'Editar';
   static const String deleteAction = 'Eliminar';
 }
@@ -20,11 +21,15 @@ class ListMedicationsView extends StatefulWidget {
 
 class _ListMedicationsView extends State<ListMedicationsView> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<MedicationsProvider>(context, listen: false).loadMedications();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double heightView = MediaQuery.of(context).size.height;
     double widthView = MediaQuery.of(context).size.width;
-
-    Provider.of<ListMedicationsProvider>(context, listen: false).loadMedications();
 
     return GestureDetector(
       onTap: () {
@@ -42,16 +47,18 @@ class _ListMedicationsView extends State<ListMedicationsView> {
               buildHeader(widthView, heightView, Constants.pageTitle, 200),
               Padding(
                 padding: EdgeInsets.only(right: 20, left: 20, top: 0),
-                child: Consumer<ListMedicationsProvider>(
+                child: Consumer<MedicationsProvider>(
                   builder: (context, provider, child) {
-                    print('Provider state: ${provider.medications}');
                     if (provider.medications.isEmpty) {
                       return Center(
                         child: Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text(
-                          'No hay medicamentos registrados',
-                          style: TextStyle(fontSize: 18, color: Colors.black54),
+                            Constants.noResults,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
                       );
@@ -140,9 +147,7 @@ class _ListMedicationsView extends State<ListMedicationsView> {
                           ),
                         ),
                       ),
-
                       SizedBox(width: 20),
-
                       Text(
                         Constants.editAction,
                         style: TextStyle(fontSize: 15, color: Colors.white),
@@ -180,9 +185,7 @@ class _ListMedicationsView extends State<ListMedicationsView> {
                           ),
                         ),
                       ),
-
                       SizedBox(width: 20),
-
                       Text(
                         Constants.deleteAction,
                         style: TextStyle(fontSize: 15, color: Colors.black),

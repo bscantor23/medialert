@@ -37,19 +37,19 @@ class Medication {
     List<dynamic> dosageList = jsonDecode(dosage);
     List<String> days = dosageList.map<String>((d) {
       switch (d) {
-        case 0:
-          return 'LUN';
         case 1:
-          return 'MAR';
+          return 'LUN';
         case 2:
-          return 'MIE';
+          return 'MAR';
         case 3:
-          return 'JUE';
+          return 'MIE';
         case 4:
-          return 'VIE';
+          return 'JUE';
         case 5:
-          return 'SAB';
+          return 'VIE';
         case 6:
+          return 'SAB';
+        case 7:
           return 'DOM';
         default:
           return '';
