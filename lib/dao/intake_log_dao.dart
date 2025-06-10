@@ -1,15 +1,21 @@
-import 'package:medialert/database/db_helper.dart';
+import 'package:medialert/services/database.dart';
 import 'package:medialert/models/intake_log.dart';
 
 class IntakeLogDao {
-  Future<int> insertLog(IntakeLog log) async {
-    final db = await DBHelper.getDatabase();
-    return await db.insert('intake_logs', log.toMap());
-  }
+  // Future<int> insertLog(IntakeLog log) async {
+  //   // TODO: si no hay logs previos
+  //   // se debe crear todos los logs de la medicación del presente día
+  //   // en base a los medications
 
-  Future<List<IntakeLog>> getLogsByMedication(int medId) async {
-    final db = await DBHelper.getDatabase();
-    final maps = await db.query('intake_logs', where: 'medicationId = ?', whereArgs: [medId]);
-    return maps.map((map) => IntakeLog.fromMap(map)).toList();
-  }
+  // }
+
+  // Future<List<IntakeLog>> getLogsByMedication(int medId) async {
+  //   final db = await DBHelper.getDatabase();
+  //   final maps = await db.query(
+  //     'intake_logs',
+  //     where: 'medicationId = ?',
+  //     whereArgs: [medId],
+  //   );
+  //   return maps.map((map) => IntakeLog.fromMap(map)).toList();
+  // }
 }

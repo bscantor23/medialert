@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:medialert/widgets/waveClipper.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -92,7 +93,8 @@ class _HomeViewState extends State<HomeView> {
   Container buildCardProximaToma() {
     return Container(
       width: double.infinity,
-      height: 120,
+      height: 140,
+      constraints: BoxConstraints(minHeight: 140),
       decoration: BoxDecoration(
         color: Color.fromRGBO(7, 170, 151, 1),
         borderRadius: BorderRadius.circular(10),
@@ -165,6 +167,7 @@ class _HomeViewState extends State<HomeView> {
     return Container(
       width: double.infinity,
       height: heightView * 0.1,
+      constraints: BoxConstraints(minHeight: 90),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -233,12 +236,15 @@ class _HomeViewState extends State<HomeView> {
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
-                      backgroundColor:  Colors.white,
-                      isScrollControlled: true, // Opcional, si quieres usar más altura
+                      backgroundColor: Colors.white,
+                      isScrollControlled:
+                          true, // Opcional, si quieres usar más altura
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
                       ),
-                      builder: (context) => buildBottonSheet(
+                      builder: (context) => buildButtonSheet(
                         context: context,
                         nombre: nombre,
                         estado: estado,
@@ -289,7 +295,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Container buildBottonSheet({
+  Container buildButtonSheet({
     required BuildContext context,
     required String nombre,
     required String estado,
@@ -298,22 +304,23 @@ class _HomeViewState extends State<HomeView> {
       height: MediaQuery.of(context).size.height / 2.7,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-       color: Colors.transparent,
+        color: Colors.transparent,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
       ),
-      child:LayoutBuilder(
-        builder: (context, constraints) =>  Column(
+      child: LayoutBuilder(
+        builder: (context, constraints) => Column(
           children: [
             SizedBox(height: 3),
             Container(
-
               height: 5,
               width: 50,
-              decoration: BoxDecoration(color:Color.fromRGBO(133, 200, 193, 1),
-              borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(133, 200, 193, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
             SizedBox(height: 6),
             Text(
@@ -323,49 +330,45 @@ class _HomeViewState extends State<HomeView> {
 
             SizedBox(height: 4),
 
-           Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Container(
-                  height: constraints.minHeight * 0.2,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(7, 170, 151, 1),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 10),
-                    child: Row(
-
-                      children: [
-                        ClipOval(
-                          child: Container(
-                            width: constraints.maxHeight * 0.17,
-                            height: constraints.maxHeight * 0.17,
-                            color: Color.fromRGBO(133, 200, 193, 1),
-                            child: Center(
-                              child: Icon(
-                                Icons.check_rounded,
-                                color: Colors.white,
-                                size: constraints.maxHeight * 0.14,
-                              ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: constraints.minHeight * 0.2,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(7, 170, 151, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  child: Row(
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: constraints.maxHeight * 0.17,
+                          height: constraints.maxHeight * 0.17,
+                          color: Color.fromRGBO(133, 200, 193, 1),
+                          child: Center(
+                            child: Icon(
+                              Icons.check_rounded,
+                              color: Colors.white,
+                              size: constraints.maxHeight * 0.14,
                             ),
                           ),
                         ),
+                      ),
 
-                        SizedBox(
-                          width: 20,
-                        ),
+                      SizedBox(width: 20),
 
-                        Text(
-                          'Tomado',
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                      ],
-                    ),
+                      Text(
+                        'Tomado',
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
-           ),
-
+              ),
+            ),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -373,19 +376,18 @@ class _HomeViewState extends State<HomeView> {
                 height: constraints.minHeight * 0.2,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(254,105,96,1),
+                  color: Color.fromRGBO(254, 105, 96, 1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 10),
                   child: Row(
-
                     children: [
                       ClipOval(
                         child: Container(
                           width: constraints.maxHeight * 0.17,
                           height: constraints.maxHeight * 0.17,
-                          color: Color.fromRGBO(255,195,86 ,1),
+                          color: Color.fromRGBO(255, 195, 86, 1),
                           child: Center(
                             child: Icon(
                               Icons.cancel,
@@ -396,9 +398,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
 
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
 
                       Text(
                         'Cancelar',
@@ -416,19 +416,18 @@ class _HomeViewState extends State<HomeView> {
                 height: constraints.minHeight * 0.2,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(255,195,86,1),
+                  color: Color.fromRGBO(255, 195, 86, 1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 10),
                   child: Row(
-
                     children: [
                       ClipOval(
                         child: Container(
                           width: constraints.maxHeight * 0.17,
                           height: constraints.maxHeight * 0.17,
-                          color: Color.fromRGBO(97,97,97,1),
+                          color: Color.fromRGBO(97, 97, 97, 1),
                           child: Center(
                             child: Icon(
                               Icons.access_time,
@@ -439,9 +438,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
 
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
 
                       Text(
                         'Espera',
@@ -452,8 +449,6 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-
-
 
             /*
 
@@ -480,7 +475,6 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.pop(context, 'espera');
               },
             ),*/
-
           ],
         ),
       ),
@@ -489,10 +483,12 @@ class _HomeViewState extends State<HomeView> {
 
   ClipPath buildHeader(double widthView, double heightView) {
     return ClipPath(
-      clipper: ClipperPersonalizado(),
+      clipper: WaveClipper(),
       child: Container(
         width: widthView,
         height: heightView * 0.3,
+        padding: EdgeInsets.only(top: 20),
+        constraints: BoxConstraints(minHeight: 320),
         color: Color.fromRGBO(7, 170, 151, 1),
         child: Padding(
           padding: EdgeInsets.only(right: 20, left: 20, bottom: 20),
@@ -507,7 +503,7 @@ class _HomeViewState extends State<HomeView> {
                     child: SizedBox(
                       width: (widthView / 1.5),
                       child: Text(
-                        '!Bienvenido a  MediAlert¡',
+                        '¡Bienvenido a  MediAlert!',
                         style: TextStyle(
                           fontSize: 40,
                           color: Colors.black,
@@ -577,33 +573,4 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-}
-
-class ClipperPersonalizado extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-
-    // Comenzamos en la esquina superior izquierda
-    path.moveTo(0, 0);
-
-    // Vamos al borde inferior izquierdo
-    path.lineTo(0, size.height * 0.8);
-
-    // Curva prominente en el centro (punto de control en el centro pero más abajo)
-    path.quadraticBezierTo(
-      size.width * 0.5, // Centro horizontal
-      size.height * 1.20, // Punto de control - 20% más abajo del fondo
-      size.width, // Termina en esquina inferior derecha
-      size.height * 0.8, // Misma altura que el lado izquierdo
-    );
-
-    path.lineTo(size.width, 0); // Esquina superior derecha
-    path.close(); // Cerramos el camino
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

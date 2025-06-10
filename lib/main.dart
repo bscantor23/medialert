@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:medialert/providers/HomeProvider.dart';
+import 'package:medialert/providers/ListMedications.dart';
 import 'package:medialert/views/BaseScreen.dart';
 import 'package:provider/provider.dart';
-
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-
-        /**
-         * Ejemplo para incluir los providers
-         */
-        ChangeNotifierProvider(create: (_) => HomeProvider()),
-        // Agrega más providers aquí
+        ChangeNotifierProvider(create: (_) => ListMedicationsProvider()),
       ],
       child: MyApp(),
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,6 +27,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

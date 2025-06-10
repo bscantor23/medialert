@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ListView;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medialert/views/add/addView.dart';
 import 'package:medialert/views/home/HomeView.dart';
 import 'package:medialert/views/record/recordView.dart';
-
-import 'list/listView.dart';
+import 'package:medialert/views/list/listMedicationsView.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -23,7 +22,7 @@ class _BaseScreenState extends State<BaseScreen> {
       case 'Agregar':
         return AddView();
       case 'Lista':
-        return listView();
+        return ListMedicationsView();
       case 'Historial':
         return RecordView();
 
