@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
-import 'package:medialert/widgets/waveClipper.dart';
-
-import '../../widgets/header.dart';
+import 'package:medialert/widgets/header.dart';
 
 
 class AddView extends StatefulWidget {
@@ -14,13 +11,14 @@ class AddView extends StatefulWidget {
 }
 
 class _AddViewState extends State<AddView> {
+
   final TextEditingController _medController = TextEditingController();
   final TextEditingController _doseController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 20, minute: 0);
   bool todosLosDias = false;
-  bool diasEspecificos = false;
+  bool diasEspecificos = true;
   List<bool> diasSeleccionados = [false, true, true, false, false, false, false];
   final dias = ['LU', 'MA', 'MI', 'JU', 'VI', 'SA', 'DO'];
   final List<String> unidades = ['mg', 'ml', 'g', 'mcg'];
@@ -39,10 +37,31 @@ class _AddViewState extends State<AddView> {
     }
   }
 
+  // Función para alternar todos los días (desde el CheckboxListTile)
+  void toggleTodosLosDias(bool value) {
+    setState(() {
+      todosLosDias = value;  // Activa o desactiva todos los días
+      diasEspecificos = !value; // Desactiva días específicos si se selecciona todos los días
+      for (int i = 0; i < diasSeleccionados.length; i++) {
+        diasSeleccionados[i] = value;
+      }
+    });
+  }
+
+  // Función para alternar un solo día
+  void toggleDia(int index) {
+    setState(() {
+      diasSeleccionados[index] = !diasSeleccionados[index];
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
+
     double heightView = MediaQuery.of(context).size.height;
     double widthView = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -56,7 +75,7 @@ class _AddViewState extends State<AddView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              buildHeader(widthView, heightView, 'Agregar medicamente', 220),
+              buildHeader(widthView, heightView, 'Agregar medicamento', 220),
               Padding( // nombre del medicamento + input text
                 padding: EdgeInsets.only(right: 20, left: 20, top: 20),
                 child: Column(
@@ -156,11 +175,7 @@ class _AddViewState extends State<AddView> {
                                 contentPadding: EdgeInsets.zero,
                                 controlAffinity: ListTileControlAffinity.leading,
                                 value: todosLosDias,
-                                onChanged: (value) {
-                                  setState(() {
-                                    todosLosDias = value!;
-                                  });
-                                },
+                                onChanged: (value) => toggleTodosLosDias(value!),
                                 title: const Text('Todos los días'),
                               ),
                               CheckboxListTile(
@@ -168,11 +183,7 @@ class _AddViewState extends State<AddView> {
                                 contentPadding: EdgeInsets.zero,
                                 controlAffinity: ListTileControlAffinity.leading,
                                 value: diasEspecificos,
-                                onChanged: (value) {
-                                  setState(() {
-                                    diasEspecificos = value!;
-                                  });
-                                },
+                                onChanged: (value) => toggleTodosLosDias(!value!),
                                 title: const Text('Días especificos'),
                               ),
                               const SizedBox(height: 6),
@@ -184,11 +195,7 @@ class _AddViewState extends State<AddView> {
                                     child: DiaCheckbox(
                                       label: dias[index],
                                       selected: diasSeleccionados[index],
-                                      onTap: () {
-                                        setState(() {
-                                          diasSeleccionados[index] = !diasSeleccionados[index];
-                                        });
-                                      },
+                                      onTap: todosLosDias ? null : () => toggleDia(index),
                                     ),
                                   );
                                 }),
@@ -336,12 +343,13 @@ class ClipperPersonalizado extends CustomClipper<Path> {
 class DiaCheckbox extends StatelessWidget {
   final String label;
   final bool selected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
+/// Constructor que recibe el label, si está seleccionado y la función onTap.
   const DiaCheckbox({
     required this.label,
     required this.selected,
-    required this.onTap,
+    this.onTap,
     super.key,
   });
 
