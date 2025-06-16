@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:medialert/dao/intake_log.dart';
 import 'package:medialert/models/intake_log.dart';
 
-class IntakeLogProvider with ChangeNotifier {
+class IntakeProvider with ChangeNotifier {
   final IntakeLogDao intakeLogDao = IntakeLogDao();
 
   List<IntakeLog> _intakeLogs = [];
@@ -13,9 +13,18 @@ class IntakeLogProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateIntakeLog(int id, String statusCode) async {
-    await intakeLogDao.update(id, statusCode);
+  Future<void> updateIntakeLog(int id, int statusId) async {
+    await intakeLogDao.update(id, statusId);
     _intakeLogs = await intakeLogDao.getDayLogs();
+    notifyListeners();
+  }
+
+  Future<void> searchIntakeLogs(String search) async {
+    if (search.isEmpty) {
+      _intakeLogs = await intakeLogDao.getDayLogs();
+    } else {
+      _intakeLogs = await intakeLogDao.search(search);
+    }
     notifyListeners();
   }
 }

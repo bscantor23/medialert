@@ -40,7 +40,12 @@ class DatabaseService {
           CREATE TABLE $_medicationStatusTableName (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            code TEXT NOT NULL
+            code TEXT NOT NULL,
+            text_color TEXT NOT NULL,
+            circle_icon_color TEXT NOT NULL,
+            background_color TEXT NOT NULL,
+            icon_color TEXT NOT NULL,
+            icon TEXT NOT NULL
           )
           ''');
 
@@ -115,16 +120,42 @@ class DatabaseService {
       );
 
       await txn.rawInsert(
-        'INSERT INTO $_medicationStatusTableName (name, code) VALUES (?, ?)',
-        ['Espera', 'P'],
+        'INSERT INTO $_medicationStatusTableName (name, code, text_color, circle_icon_color, background_color, icon_color, icon) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [
+          'Tomado',
+          'T',
+          '0xFFFFFFFF',
+          '0xFFFFFFFF',
+          '0xFF07AA97',
+          '0xFF85C8C1',
+          '0xe159',
+        ],
       );
       await txn.rawInsert(
-        'INSERT INTO $_medicationStatusTableName (name, code) VALUES (?, ?)',
-        ['Tomado', 'T'],
+        'INSERT INTO $_medicationStatusTableName (name, code, text_color, circle_icon_color, background_color, icon_color, icon) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [
+          'Espera',
+          'P',
+          '0xFF000000',
+          '0xFF616161',
+          '0xFFFFC356',
+          '0xFFFFFFFF',
+          '0xe03a',
+        ],
       );
+
       await txn.rawInsert(
-        'INSERT INTO $_medicationStatusTableName (name, code) VALUES (?, ?)',
-        ['Saltado', 'S'],
+        'INSERT INTO $_medicationStatusTableName (name, code, text_color, circle_icon_color, background_color, icon_color, icon) VALUES (?, ?, ?, ?, ?, ?, ?)',
+
+        [
+          'Saltado',
+          'S',
+          '0xFFFFFFFF',
+          '0xFFFFC356',
+          '0xFFFE6960',
+          '0xFFDC2626',
+          '0xe139',
+        ],
       );
 
       await txn.rawInsert(
@@ -134,13 +165,20 @@ class DatabaseService {
           500.0,
           'Paracetamol',
           'Tomar cada 8 horas',
-          '[1, 2, 3]',
-          '08:00 AM',
+          '[1,2,3,4,5,6,7]',
+          '10:00 PM',
         ],
       );
       await txn.rawInsert(
         'INSERT INTO $_medicationsTableName (mass_unit_id, quantity, name, instructions, dosage, time) VALUES (?, ?, ?, ?, ?, ?)',
-        [2, 250.0, 'Ibuprofeno', 'Tomar cada 6 horas', '[3, 4]', '12:00 PM'],
+        [
+          2,
+          250.0,
+          'Ibuprofeno',
+          'Tomar cada 6 horas',
+          '[1,2,3,4,5,6,7]',
+          '1:00 AM',
+        ],
       );
 
       await txn.rawInsert(
@@ -161,8 +199,8 @@ class DatabaseService {
           750.0,
           'Metformina',
           'Tomar cada 12 horas',
-          '[1,2,3,4,5,6]',
-          '10:00 PM',
+          '[1,2,3,4,5,6,7]',
+          '10:00 AM',
         ],
       );
     });

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:medialert/widgets/header.dart';
 
-
 class AddView extends StatefulWidget {
   const AddView({super.key});
 
@@ -18,12 +17,19 @@ class _AddViewState extends State<AddView> {
 
   TimeOfDay selectedTime = TimeOfDay(hour: 20, minute: 0);
   bool todosLosDias = false;
-  bool diasEspecificos = true;
-  List<bool> diasSeleccionados = [false, true, true, false, false, false, false];
+  bool diasEspecificos = false;
+  List<bool> diasSeleccionados = [
+    false,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+  ];
   final dias = ['LU', 'MA', 'MI', 'JU', 'VI', 'SA', 'DO'];
   final List<String> unidades = ['mg', 'ml', 'g', 'mcg'];
   String unidadSeleccionada = 'mg';
-
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -75,15 +81,19 @@ class _AddViewState extends State<AddView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              buildHeader(widthView, heightView, 'Agregar medicamento', 220),
-              Padding( // nombre del medicamento + input text
+              buildHeader(widthView, heightView, 'Agregar medicamente', 220),
+              Padding(
+                // nombre del medicamento + input text
                 padding: EdgeInsets.only(right: 20, left: 20, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Nombre del medicamento',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     TextField(
@@ -93,7 +103,10 @@ class _AddViewState extends State<AddView> {
                         prefixIcon: Icon(Icons.medication_outlined),
                         filled: true,
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ],
@@ -107,16 +120,21 @@ class _AddViewState extends State<AddView> {
                     const SizedBox(height: 6),
                     const Text(
                       'Dosis',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Column( // Dosis
+                          child: Column(
+                            // Dosis
                             children: [
-                              Row( // input text dosis + mg
+                              Row(
+                                // input text dosis + mg
                                 children: [
                                   Expanded(
                                     child: TextField(
@@ -127,14 +145,20 @@ class _AddViewState extends State<AddView> {
                                         filled: true,
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          borderSide: BorderSide.none,
+                                        ),
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(12),
@@ -142,46 +166,66 @@ class _AddViewState extends State<AddView> {
                                       child: DropdownButtonHideUnderline(
                                         child: DropdownButton<String>(
                                           value: unidadSeleccionada,
-                                          icon: const Icon(Icons.arrow_drop_down),
-                                          style: const TextStyle(color: Colors.black),
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down,
+                                          ),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               unidadSeleccionada = newValue!;
                                             });
                                           },
-                                          items: unidades.map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
+                                          items: unidades
+                                              .map<DropdownMenuItem<String>>((
+                                                String value,
+                                              ) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              })
+                                              .toList(),
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 24),
-                              Row( // frecuencia
+                              Row(
+                                // frecuencia
                                 children: [
                                   Text(
                                     'Frecuencia',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ],
                               ),
                               CheckboxListTile(
-                                visualDensity: VisualDensity(horizontal: 0, vertical: -4), // ajusta altura
+                                visualDensity: VisualDensity(
+                                  horizontal: 0,
+                                  vertical: -4,
+                                ), // ajusta altura
                                 contentPadding: EdgeInsets.zero,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: todosLosDias,
                                 onChanged: (value) => toggleTodosLosDias(value!),
                                 title: const Text('Todos los días'),
                               ),
                               CheckboxListTile(
-                                visualDensity: VisualDensity(horizontal: 0, vertical: -4), // ajusta altura
+                                visualDensity: VisualDensity(
+                                  horizontal: 0,
+                                  vertical: -4,
+                                ), // ajusta altura
                                 contentPadding: EdgeInsets.zero,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: diasEspecificos,
                                 onChanged: (value) => toggleTodosLosDias(!value!),
                                 title: const Text('Días especificos'),
@@ -191,11 +235,18 @@ class _AddViewState extends State<AddView> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: List.generate(dias.length, (index) {
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 2.0,
+                                    ),
                                     child: DiaCheckbox(
                                       label: dias[index],
                                       selected: diasSeleccionados[index],
-                                      onTap: todosLosDias ? null : () => toggleDia(index),
+                                      onTap: () {
+                                        setState(() {
+                                          diasSeleccionados[index] =
+                                              !diasSeleccionados[index];
+                                        });
+                                      },
                                     ),
                                   );
                                 }),
@@ -205,10 +256,9 @@ class _AddViewState extends State<AddView> {
                         ),
                         Expanded(
                           flex: 2,
-                          child: Column( // horario
-                            children: [
-                              buildHorarioCard(context),
-                            ],
+                          child: Column(
+                            // horario
+                            children: [buildHorarioCard(context)],
                           ),
                         ),
                       ],
@@ -216,8 +266,11 @@ class _AddViewState extends State<AddView> {
                     const SizedBox(height: 36),
                     const Text(
                       'Notas',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
+                    ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: _notesController,
@@ -225,7 +278,10 @@ class _AddViewState extends State<AddView> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -235,12 +291,18 @@ class _AddViewState extends State<AddView> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.teal,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                             onPressed: () {},
                             child: const Text(
                               'Guardar',
-                              style: TextStyle(color: Colors.white, fontSize: 20)),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -248,18 +310,23 @@ class _AddViewState extends State<AddView> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey.shade400,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                             onPressed: () {},
                             child: const Text(
                               'Cancelar',
-                              style: TextStyle(color: Colors.black, fontSize: 20)
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 20)
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -271,7 +338,7 @@ class _AddViewState extends State<AddView> {
     );
   }
 
-/// Construye un card que muestra el horario seleccionado y un reloj analógico.
+  /// Construye un card que muestra el horario seleccionado y un reloj analógico.
   Widget buildHorarioCard(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -296,13 +363,13 @@ class _AddViewState extends State<AddView> {
                   children: [
                     Text(
                       selectedTime.format(context),
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    AnalogClockDisplay(
-                      time: selectedTime,
-                      size: 120,
-                    ),
+                    AnalogClockDisplay(time: selectedTime, size: 120),
                   ],
                 ),
               ),
@@ -313,8 +380,6 @@ class _AddViewState extends State<AddView> {
       ),
     );
   }
-
-
 }
 
 /// Clipper personalizado para crear una curva en el header de la vista.
@@ -431,11 +496,16 @@ class _AnalogClockPainter extends CustomPainter {
 
       textPainter.text = TextSpan(
         text: '$i',
-        style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
       );
 
       textPainter.layout();
-      final offset = position - Offset(textPainter.width / 2, textPainter.height / 2);
+      final offset =
+          position - Offset(textPainter.width / 2, textPainter.height / 2);
       textPainter.paint(canvas, offset);
     }
 
@@ -447,8 +517,14 @@ class _AnalogClockPainter extends CustomPainter {
     final hourHandLength = radius * 0.45;
     final minuteHandLength = radius * 0.65;
 
-    final hourHandEnd = center + Offset(cos(hourAngle - pi / 2), sin(hourAngle - pi / 2)) * hourHandLength;
-    final minuteHandEnd = center + Offset(cos(minuteAngle - pi / 2), sin(minuteAngle - pi / 2)) * minuteHandLength;
+    final hourHandEnd =
+        center +
+        Offset(cos(hourAngle - pi / 2), sin(hourAngle - pi / 2)) *
+            hourHandLength;
+    final minuteHandEnd =
+        center +
+        Offset(cos(minuteAngle - pi / 2), sin(minuteAngle - pi / 2)) *
+            minuteHandLength;
 
     canvas.drawLine(center, hourHandEnd, paintHourHand);
     canvas.drawLine(center, minuteHandEnd, paintMinuteHand);
@@ -460,5 +536,3 @@ class _AnalogClockPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
-
-

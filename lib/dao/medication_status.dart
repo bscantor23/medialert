@@ -6,8 +6,19 @@ class MedicationStatusDao {
 
   Future<List<MedicationStatus>> getAll() async {
     final db = await DatabaseService.getDatabase();
-    final maps = await db.query('medication_statuses');
+    final maps = await db.query('medication_statuses', orderBy: 'id');
+
     return maps.map((map) => MedicationStatus.fromMap(map)).toList();
+  }
+
+  Future<MedicationStatus> getById(String id) async {
+    final db = await DatabaseService.getDatabase();
+    final maps = await db.query(
+      'medication_statuses',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return maps.map((map) => MedicationStatus.fromMap(map)).toList()[0];
   }
 
   Future<MedicationStatus> getByCode(String code) async {

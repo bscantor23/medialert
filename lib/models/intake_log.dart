@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:medialert/models/medication_status.dart';
 
 class IntakeLog {
   int? id;
   int medicationId;
   int medicationStatusId;
-  String statusName = '';
   int massUnitId;
   String massUnitSymbol = '';
   String name;
@@ -13,12 +13,12 @@ class IntakeLog {
   String dosage;
   String time;
   String intakeDay;
+  MedicationStatus? medicationStatus;
 
   IntakeLog({
     this.id,
     required this.medicationId,
     required this.medicationStatusId,
-    this.statusName = '',
     required this.massUnitId,
     this.massUnitSymbol = '',
     required this.name,
@@ -27,12 +27,12 @@ class IntakeLog {
     required this.dosage,
     required this.time,
     required this.intakeDay,
+    this.medicationStatus,
   });
 
   Map<String, dynamic> toMap() => {
     'id': id,
     'medicationId': medicationId,
-    'medicationStatusId': medicationStatusId,
     'massUnitId': massUnitId,
     'quantity': quantity,
     'name': name,
@@ -40,6 +40,7 @@ class IntakeLog {
     'dosage': dosage,
     'time': time,
     'intakeDay': intakeDay,
+    'medicationStatus': medicationStatus?.toMap(),
   };
 
   String getDosageText() {
@@ -68,18 +69,21 @@ class IntakeLog {
     return days.isEmpty || days.length == 7 ? 'DIARIO' : days.join(' - ');
   }
 
-  factory IntakeLog.fromMap(Map<String, dynamic> map) => IntakeLog(
+  factory IntakeLog.fromMap(
+    Map<String, dynamic> map,
+    MedicationStatus? medicationStatus,
+  ) => IntakeLog(
     id: map['id'],
-    medicationId: map['medicationId'],
-    medicationStatusId: map['medicationStatusId'],
-    statusName: map['statusName'] ?? '',
-    massUnitId: map['massUnitId'],
-    massUnitSymbol: map['massUnitSymbol'] ?? '',
+    medicationId: map['medication_id'],
+    medicationStatusId: map['medication_status_id'],
+    massUnitId: map['mass_unit_id'],
+    massUnitSymbol: map['mass_unit_symbol'] ?? '',
     quantity: map['quantity'],
     name: map['name'],
     instructions: map['instructions'],
     dosage: map['dosage'],
     time: map['time'],
-    intakeDay: map['intakeDay'],
+    intakeDay: map['intake_day'],
+    medicationStatus: medicationStatus,
   );
 }

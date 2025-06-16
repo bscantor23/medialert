@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:medialert/services/database.dart';
 import 'package:medialert/dao/medication_status.dart';
 import 'package:medialert/models/intake_log.dart';
@@ -49,35 +50,88 @@ class IntakeLogDao {
 
   Future<List<IntakeLog>> getDayLogs() async {
     final db = await DatabaseService.getDatabase();
-    List<Map<String, dynamic>> maps;
+    List<Map<String, dynamic>> raw;
     do {
-      maps = await db.rawQuery(
+      raw = await db.rawQuery(
         '''
-      SELECT i.id, i.medication_id as medicationId, i.medication_status_id as medicationStatusId, 
-      ms.name as statusName, i.mass_unit_id as massUnitId, mu.symbol AS massUnitSymbol,
-      i.quantity, i.name, i.instructions, i.dosage, i.time, i.intake_day as intakeDay
+      SELECT i.id, i.medication_id, i.medication_status_id, i.mass_unit_id, mu.symbol,
+      i.quantity, i.name, i.instructions, i.dosage, i.time, i.intake_day
       FROM intake_logs i
       JOIN mass_units mu ON i.mass_unit_id = mu.id
-      JOIN medication_statuses ms ON i.medication_status_id = ms.id
       WHERE i.intake_day = ?
       ''',
         [DateTime.now().toIso8601String().split('T')[0]],
       );
-      if (maps.isEmpty) {
+      if (raw.isEmpty) {
         await populateDay();
       }
-    } while (maps.isEmpty);
+    } while (raw.isEmpty);
 
-    return maps.map((map) => IntakeLog.fromMap(map)).toList();
+    final results = [...raw];
+    final DateFormat timeFormat = DateFormat('hh:mm a');
+
+    results.sort((a, b) {
+      DateTime timeA = timeFormat.parse(a['time'] as String);
+      DateTime timeB = timeFormat.parse(b['time'] as String);
+      return timeA.compareTo(timeB);
+    });
+
+    final medicationStatuses = await MedicationStatusDao().getAll();
+
+    return results
+        .map(
+          (map) => IntakeLog.fromMap(
+            map,
+            medicationStatuses.firstWhere(
+              (status) => status.id == map['medication_status_id'],
+            ),
+          ),
+        )
+        .toList();
   }
 
-  Future<void> update(int id, String statusCode) async {
+  Future<List<IntakeLog>> search(String name) async {
     final db = await DatabaseService.getDatabase();
-    final medStatus = await MedicationStatusDao().getByCode(statusCode);
+    List<Map<String, dynamic>> raw;
+    raw = await db.rawQuery(
+      '''
+      SELECT i.id, i.medication_id, i.medication_status_id, i.mass_unit_id, mu.symbol,
+      i.quantity, i.name, i.instructions, i.dosage, i.time, i.intake_day
+      FROM intake_logs i
+      JOIN mass_units mu ON i.mass_unit_id = mu.id
+      WHERE i.intake_day = ? AND i.name LIKE ?
+      ''',
+      [DateTime.now().toIso8601String().split('T')[0], '%$name%'],
+    );
 
+    final results = [...raw];
+    final DateFormat timeFormat = DateFormat('hh:mm a');
+
+    results.sort((a, b) {
+      DateTime timeA = timeFormat.parse(a['time'] as String);
+      DateTime timeB = timeFormat.parse(b['time'] as String);
+      return timeA.compareTo(timeB);
+    });
+
+    final medicationStatuses = await MedicationStatusDao().getAll();
+
+    return results
+        .map(
+          (map) => IntakeLog.fromMap(
+            map,
+            medicationStatuses.firstWhere(
+              (status) => status.id == map['medication_status_id'],
+            ),
+          ),
+        )
+        .toList();
+  }
+
+  Future<void> update(int id, int statusId) async {
+    final db = await DatabaseService.getDatabase();
     await db.update(
       'intake_logs',
-      {'medication_status_id': medStatus.id},
+      {'medication_status_id': statusId},
       where: 'id = ?',
       whereArgs: [id],
     );

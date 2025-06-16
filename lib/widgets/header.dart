@@ -6,6 +6,7 @@ ClipPath buildHeader(
   double heightView,
   String title,
   double minHeight,
+  [List<Widget>? extraWidget]
 ) {
   return ClipPath(
     clipper: WaveClipper(),
@@ -54,7 +55,7 @@ ClipPath buildHeader(
                 ),
               ],
             ),
-            Spacer(),
+            ...extraWidget ?? [],
           ],
         ),
       ),
