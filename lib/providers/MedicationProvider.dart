@@ -18,4 +18,11 @@ class MedicationProvider with ChangeNotifier {
     _medications = await medicationDao.getAll();
     notifyListeners();
   }
+  Future<void> updateMedication(Medication medication) async{
+    if (medication.id == null) return;
+
+    await medicationDao.updateMedication(medication);
+
+    await loadMedications();
+  }
 }

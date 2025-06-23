@@ -92,32 +92,22 @@ class DatabaseService {
     await _db!.transaction((txn) async {
       await txn.rawInsert(
         'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Gramos', 'g'],
+        ['Miligramo', 'mg'],
+      );
+
+      await txn.rawInsert(
+        'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
+        ['Mililitro', 'ml'],
       );
       await txn.rawInsert(
         'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Miligramos', 'mg'],
+        ['Gramo', 'g'],
       );
       await txn.rawInsert(
         'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Kilogramos', 'kg'],
+        ['Microgramo', 'mcg'],
       );
-      await txn.rawInsert(
-        'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Libras', 'lb'],
-      );
-      await txn.rawInsert(
-        'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Onzas', 'oz'],
-      );
-      await txn.rawInsert(
-        'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Mililitros', 'ml'],
-      );
-      await txn.rawInsert(
-        'INSERT INTO $_massUnitsTableName (name, symbol) VALUES (?, ?)',
-        ['Litros', 'l'],
-      );
+
 
       await txn.rawInsert(
         'INSERT INTO $_medicationStatusTableName (name, code, text_color, circle_icon_color, background_color, icon_color, icon) VALUES (?, ?, ?, ?, ?, ?, ?)',

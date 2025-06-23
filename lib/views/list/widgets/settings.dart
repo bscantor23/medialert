@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medialert/models/medication.dart';
 import 'package:medialert/providers/MedicationProvider.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/BaseScreenProvider.dart';
+import '../../add/addView.dart';
 
 class Constants {
   static const String modalTitle = '¿Alguna modificación pendiente?';
@@ -45,37 +49,46 @@ Container buildSettings({
 
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: constraints.minHeight * 0.2,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(251, 192, 45, 1),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5, right: 10),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Container(
-                        width: constraints.maxHeight * 0.17,
-                        height: constraints.maxHeight * 0.17,
-                        color: Color.fromRGBO(245, 206, 106, 1),
-                        child: Center(
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: constraints.maxHeight * 0.12,
+            child: GestureDetector(
+              onTap: () async {
+                Future.delayed(Duration(milliseconds: 50), () {
+                  context.read<BaseScreenProvider>().updateNameItem('Agregar',medication);
+                  Navigator.pop(context);
+                });
+
+              },
+              child: Container(
+                height: constraints.minHeight * 0.2,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(251, 192, 45, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  child: Row(
+                    children: [
+                      ClipOval(
+                        child: Container(
+                          width: constraints.maxHeight * 0.17,
+                          height: constraints.maxHeight * 0.17,
+                          color: Color.fromRGBO(245, 206, 106, 1),
+                          child: Center(
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: constraints.maxHeight * 0.12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      Constants.editAction,
-                      style: TextStyle(fontSize: 15, color: Colors.white),
-                    ),
-                  ],
+                      SizedBox(width: 20),
+                      Text(
+                        Constants.editAction,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

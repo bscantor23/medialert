@@ -42,4 +42,13 @@ class MedicationDao {
       whereArgs: [id, DateTime.now().toIso8601String().split('T')[0]],
     );
   }
+  Future<int> updateMedication(Medication med) async {
+    final db = await DatabaseService.getDatabase();
+    return await db.update(
+      'medications',
+      med.toMap(),
+      where: 'id = ?',
+      whereArgs: [med.id],
+    );
+  }
 }

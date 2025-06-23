@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medialert/providers/BaseScreenProvider.dart';
 import 'package:medialert/providers/HistoricProvider.dart';
 import 'package:medialert/providers/StatusProvider.dart';
 import 'package:medialert/providers/IntakeProvider.dart';
@@ -14,6 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => IntakeProvider()),
         ChangeNotifierProvider(create: (_) => MedicationProvider()),
         ChangeNotifierProvider(create: (_) => HistoricProvider()),
+        ChangeNotifierProvider(create: (_) => BaseScreenProvider()),
       ],
       child: MyApp(),
     ),

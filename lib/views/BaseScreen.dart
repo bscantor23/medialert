@@ -4,6 +4,9 @@ import 'package:medialert/views/add/addView.dart';
 import 'package:medialert/views/home/HomeView.dart';
 import 'package:medialert/views/record/recordView.dart';
 import 'package:medialert/views/list/listMedicationsView.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/BaseScreenProvider.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -13,33 +16,23 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  String _nameItemActive = 'Home';
-///Función selectora de vista
-  Widget getView() {
-    switch (_nameItemActive) {
-      case 'Home':
-        return HomeView();
-      case 'Agregar':
-        return AddView();
-      case 'Lista':
-        return ListMedicationsView();
-      case 'Historial':
-        return RecordView();
 
-      default:
-        return Center(child: Text('Page not found'));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     double widthView = MediaQuery.of(context).size.width;
 
     return Scaffold(
-
       resizeToAvoidBottomInset: false,
       extendBody: true,
-      body: Stack(children: [getView(), buildBottomNavigationBar(widthView)]),
+      body: Stack(children: [
+        Consumer<BaseScreenProvider>(
+          builder: (context, provider, child) {
+            return provider.vista; // Rebuilds when notifyListeners is called
+          },
+        ),
+
+        buildBottomNavigationBar(widthView)]),
     );
   }
 
@@ -53,15 +46,14 @@ class _BaseScreenState extends State<BaseScreen> {
         decoration: BoxDecoration(
           color: Color.fromRGBO(7, 170, 151, 1),
           borderRadius: BorderRadius.circular(50),
-          boxShadow: [BoxShadow(
-            color: Colors.black54,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
               blurRadius: 5,
               spreadRadius: 2,
-              offset: Offset(0, 2)
-          ),
-
-
-          ]
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         width: widthView,
         height: 70,
@@ -116,56 +108,58 @@ class _BaseScreenState extends State<BaseScreen> {
     required String iconPathActive,
     required String name,
   }) {
-    bool isActive = _nameItemActive == name;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _nameItemActive = name;
+          context.read<BaseScreenProvider>().updateNameItem(name);
         });
       },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOutCubic,
-        width: isActive
-            ? constraints.maxWidth * 0.4
-            : constraints.maxWidth * 0.15,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              isActive ? iconPathActive : iconPath,
-              height: name == 'Lista' ? 25 : 35,
-            ),
+      child:
+        Consumer<BaseScreenProvider>(
+          builder: (context, provider, child) {
+            bool isActive = provider.name == name; // Reactivo a cambios en provider.name
 
-            if (isActive) ...[
-              ///Animacion para evitar desbordamiento de nombre del item
-              TweenAnimationBuilder<double>(
-                duration: Duration(milliseconds: 400),
-                tween: Tween(end: 1.0, begin: 0.0),
-                builder: (context, value, child) => Row(
-                  children: [
-                    SizedBox(width: 10 * value),
-                    Text(
-                      name,
-                      style: TextStyle(
-                        color: Color.fromRGBO(7, 170, 151, 1),
-                        fontSize: 15 * value,
-                        fontWeight: FontWeight.bold,
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOutCubic,
+              width: isActive ? constraints.maxWidth * 0.4 : constraints.maxWidth * 0.15,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: isActive ? Colors.white : Colors.transparent,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    isActive ? iconPathActive : iconPath,
+                    height: name == 'Lista' ? 25 : 35,
+                  ),
+                  if (isActive) ...[
+                    TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 400),
+                      tween: Tween(end: 1.0, begin: 0.0),
+                      builder: (context, value, child) => Row(
+                        children: [
+                          SizedBox(width: 10 * value),
+                          Text(
+                            name,
+                            style: TextStyle(
+                              color: Color.fromRGBO(7, 170, 151, 1),
+                              fontSize: 15 * value,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ),
+                ],
               ),
-            ],
-          ],
+            );
+          },
         ),
-      ),
     );
   }
 }
