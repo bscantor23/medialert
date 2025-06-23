@@ -24,7 +24,7 @@ class Medication {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'massUnitId': massUnitId,
+      'mass_unit_id': massUnitId,
       'quantity': quantity,
       'name': name,
       'instructions': instructions,
