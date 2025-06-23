@@ -176,7 +176,7 @@ class DatabaseService {
           250.0,
           'Ibuprofeno',
           'Tomar cada 6 horas',
-          '[1,2,3,4,5,6,7]',
+          '[1,2,3,4,7]',
           '1:00 AM',
         ],
       );
@@ -188,7 +188,7 @@ class DatabaseService {
           1000.0,
           'Amoxicilina',
           'Tomar cada 24 horas',
-          '[1,2,3,4,5,6,7]',
+          '[1,2,7]',
           '09:00 PM',
         ],
       );
@@ -199,7 +199,7 @@ class DatabaseService {
           750.0,
           'Metformina',
           'Tomar cada 12 horas',
-          '[1,2,3,4,5,6,7]',
+          '[5,6,7]',
           '10:00 AM',
         ],
       );

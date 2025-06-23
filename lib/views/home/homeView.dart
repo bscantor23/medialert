@@ -12,11 +12,9 @@ import 'package:medialert/providers/IntakeProvider.dart';
 class Constants {
   static const String welcomeTitle = 'Bienvenido a MediAlert';
   static const String welcomeSubtitle = 'Medicamentos próximos';
-  static const String completeState = 'completado';
   static const String loading = 'Cargando...';
   static const String searchPlaceholder = 'Buscar medicamento';
   static const String noResults = 'No hay resultados';
-  static const String completed = 'Medicación completada';
 }
 
 class HomeView extends StatefulWidget {

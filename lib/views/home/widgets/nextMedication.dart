@@ -6,7 +6,7 @@ class Constants {
   static const String nextIntakeTitle = 'Próxima toma';
   static const String takenState = 'tomas registradas';
   static const String noResults = 'No hay resultados';
-  static const String completed = 'Medicación completada';
+  static const String completed = 'Medicación registrada';
 }
 
 Container buildCardNextMedication(IntakeProvider intakeProvider) {

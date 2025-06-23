@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medialert/models/medication.dart';
+import 'package:medialert/providers/MedicationProvider.dart';
 import 'package:medialert/views/list/widgets/settings.dart';
 
 Container buildContainer({
   required Medication medication,
+  required MedicationProvider medicationProvider,
   required double heightView,
 }) {
   return Container(
@@ -90,6 +92,7 @@ Container buildContainer({
                       builder: (context) => buildSettings(
                         context: context,
                         medication: medication,
+                        medicationProvider: medicationProvider,
                       ),
                     );
                   },

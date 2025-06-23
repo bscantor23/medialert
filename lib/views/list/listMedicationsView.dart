@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:medialert/models/medication.dart';
 import 'package:medialert/views/list/widgets/medicationContainer.dart';
 import 'package:provider/provider.dart';
-import 'package:medialert/providers/MedicationsProvider.dart';
+import 'package:medialert/providers/MedicationProvider.dart';
 import 'package:medialert/widgets/header.dart';
 
 class Constants {
@@ -17,10 +18,16 @@ class ListMedicationsView extends StatefulWidget {
 }
 
 class _ListMedicationsView extends State<ListMedicationsView> {
+  late MedicationProvider _medicationProvider;
+
   @override
   void initState() {
     super.initState();
-    Provider.of<MedicationsProvider>(context, listen: false).loadMedications();
+    _medicationProvider = Provider.of<MedicationProvider>(
+      context,
+      listen: false,
+    );
+    _medicationProvider.loadMedications();
   }
 
   @override
@@ -44,7 +51,7 @@ class _ListMedicationsView extends State<ListMedicationsView> {
               buildHeader(widthView, heightView, Constants.pageTitle, 220),
               Padding(
                 padding: EdgeInsets.only(right: 20, left: 20, top: 0),
-                child: Consumer<MedicationsProvider>(
+                child: Consumer<MedicationProvider>(
                   builder: (context, provider, child) {
                     if (provider.medications.isEmpty) {
                       return Center(
@@ -68,6 +75,7 @@ class _ListMedicationsView extends State<ListMedicationsView> {
                         final medication = provider.medications[index];
                         return buildContainer(
                           medication: medication,
+                          medicationProvider: _medicationProvider,
                           heightView: heightView,
                         );
                       },

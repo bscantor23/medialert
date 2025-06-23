@@ -31,4 +31,15 @@ class MedicationDao {
     //final results = sortByTime(raw, 'hh:mm a', 'time');
     return results.map((map) => Medication.fromMap(map)).toList();
   }
+
+  Future<void> delete(int id) async {
+    final db = await DatabaseService.getDatabase();
+    await db.delete('medications', where: 'id = ?', whereArgs: [id]);
+
+    await db.delete(
+      'intake_logs',
+      where: 'medication_id = ? AND intake_day = ?',
+      whereArgs: [id, DateTime.now().toIso8601String().split('T')[0]],
+    );
+  }
 }
